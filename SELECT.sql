@@ -9,15 +9,18 @@ where duration >= 210;
 
 -- Названия сборников, вышедших в период с 2018 по 2020 год включительно
 select name from collections
-where release between 2018 and 2020
+where release between 2018 and 2020;
 
 -- Исполнители, чьё имя состоит из одного слова
 select nickname from musicians
-where nickname not like '% %'
+where nickname not like '% %';
 
 -- Название треков, которые содержат слово "мой" или "my"
 select name from tracks
-where name like '%мой%' or name like '%my%'
+where string_to_array(lower(name), ' ') && array['мой', 'my'];
+-- или
+select name from tracks
+where name ~* '[[:<:]](мой|my)[[:>:]]'
 
 
 -- Task_3
@@ -39,10 +42,13 @@ group by a.name
 order by round(AVG(duration), 2) desc;
 
 -- Все исполнители, которые не выпустили альбомы в 2020 году
-select distinct nickname from musicians m
-join album_musician am on am.musician_id = m.musician_id
-join albums a on a.album_id = am.album_id
-where a.release != 2020;
+select nickname from musicians
+where nickname not in (
+	select nickname from musicians m
+	join album_musician am on am.musician_id = m.musician_id
+	join albums a on a.album_id = am.album_id
+	where a.release = 2020
+);
 
 -- Названия сборников, в которых присутствует конкретный исполнитель (Король и шут)
 select distinct c.name from collections c
@@ -53,15 +59,15 @@ join album_musician am on am.album_id = a.album_id
 join musicians m on m.musician_id = am.musician_id
 where m.nickname = 'Король и шут';
 
+
 -- Task_4
 -- Названия альбомов, в которых присутствуют исполнители более чем одного жанра
-select a.name from albums a
+select distinct a.name from albums a
 join album_musician am on am.album_id = a.album_id
 join musicians m on m.musician_id = am.musician_id
 join genre_musician gm on gm.musician_id = m.musician_id
-join genres g on g.genre_id = gm.genre_id
-group by a.name
-having count(a.album_id) > 1;
+group by a.name, gm.musician_id
+having count(gm.genre_id) > 1;
 
 -- Наименования треков, которые не входят в сборники
 select name from tracks t
@@ -78,5 +84,10 @@ where t.duration = (select min(duration) from tracks);
 -- Названия альбомов, содержащих наименьшее количество треков
 select a.name from albums a
 join tracks t on t.album_id = a.album_id
-group by a.name
-having count(t.track_id) < 4
+group by a.album_id
+having count(t.track_id) = (
+	select count(track_id) from tracks
+	group by album_id
+	order by 1
+	limit 1
+);
