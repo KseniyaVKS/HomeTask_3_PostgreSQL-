@@ -7,8 +7,6 @@ values
 ('Мот'),
 ('Niletto');
 
-select * from musicians
-
 
 insert into genres(name)
 values
@@ -16,8 +14,6 @@ values
 ('панк'),
 ('поп'),
 ('рэп');
-
-select * from genres
 
 
 insert into Albums(name, release) 
@@ -35,8 +31,6 @@ values
 ('Azbuka Morze', 2014),
 ('Парабола', 2020),
 ('Простым', 2020);
-
-select * from albums
 
 
 insert into tracks(name, duration, album_id)
@@ -75,8 +69,8 @@ values
 ('Я мочился в ночь', 131, 6),
 ('Эстрадная песня', 117, 6),
 ('Демобилизация', 235, 7),
-('Свадьба', 265, 7),
-('Рога', 195, 7),
+('my Свадьба', 265, 7),
+('Рога my', 195, 7),
 ('Сельский туалет', 169, 7),
 ('Грязная кровь', 245, 7),
 ('Дачники', 130, 8),
@@ -87,9 +81,9 @@ values
 ('Небесный Теннис', 208, 9),
 ('На не', 139, 9),
 ('Суть', 147, 9),
-('Ф.К.', 129, 9),
+('my', 129, 9),
 ('Нефть', 102, 9),
-('По бабам', 147, 10),
+('По my бабам', 147, 10),
 ('Любовь', 153, 10),
 ('Карлсон', 138, 10),
 ('Дача', 183, 10),
@@ -111,8 +105,6 @@ values
 ('Платить за дружбу не нужно', 186, 13),
 ('Я останусь простым', 192, 13);
 
-select * from tracks
-
 
 insert into genre_musician(genre_id, musician_id) 
 values
@@ -125,8 +117,6 @@ values
 (3, 6),
 (4, 5),
 (4, 6);
-
-select * from genre_musician
 
 
 insert into album_musician(album_id, musician_id) 
@@ -145,8 +135,6 @@ values
 (12, 5),
 (13, 6);
 
-select * from album_musician
-
 
 insert into collections(name, release) 
 values
@@ -154,8 +142,6 @@ values
 ('Сборник_2', 2013),
 ('Сборник_3', 2018),
 ('Сборник_4', 2023);
-
-select * from collections
 
 
 insert into track_collection(track_id, collection_id) 
@@ -180,5 +166,3 @@ values
 (64, 4),
 (66, 4),
 (67, 4);
-
-select * from track_collection
